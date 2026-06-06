@@ -123,13 +123,12 @@ ion-input, ion-textarea {  --color: #000000; --font-weight: bold; }
   --background: transparent;
   --placeholder-color: #768090;
   --color: #000000;
-  background: transparent;
-    overflow-y: auto; //text stays inside the chat input
+  background: transparent; //text stays inside the chat input
+  overflow-y: auto;
   border: none !important;
   outline: none !important;
-  max-height: 90px !important;// limit height for 4 lines of text 
-} 
-
+  max-height: 90px !important; // limit height for 4 lines of text 
+}
 ion-footer.chat-footer:not(.keyboard-open) 
 { min-height: 40px !important ; }   //height; 
 
@@ -341,6 +340,17 @@ ion-footer.chat-footer:not(.keyboard-open)
   margin: 0 auto;
   padding: 100px; }
 
-  .msg-avatar--photo { object-fit: cover; }
+  .msg-avatar--photo { object-fit: cover; }  
+  
+  @media (min-width: 768px)
+  {  
 
- 
+
+.chat-input{&::part(textarea) {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }}}

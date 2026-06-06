@@ -89,6 +89,19 @@ body.dark {
  * ============================================================ */
 
 
+// Hide scrollbar on textarea/input
+textarea {
+  resize: none !important;
+  overflow: hidden !important;  // or overflow-y: hidden
+}
+
+ion-textarea textarea {
+  overflow: hidden !important;
+  resize: none !important; }
+
+
+
+
 /* All ion-content page backgrounds */
 body.dark ion-content {
   --background: #071e1d; }          /* ← change to adjust ALL page backgrounds */
@@ -681,6 +694,18 @@ body.dark .empty-state ion-icon {
  * ============================================================ */
 
 
+// Hide ALL scrollbars everywhere
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  
+  &::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+}
+
 // black background issue
 body.dark app-chat {
   --ion-background-color: #071e1d !important;
@@ -689,6 +714,13 @@ body.dark app-chat {
 /* Chat toolbar/header */
 body.dark .chat-toolbar 
 { --background: #0d3d3c  !important; }
+
+/* Chat footer input bar */
+body.dark .chat-footer {
+  background: #0d3d3c !important;
+  border-color: #157266 !important;
+  --background: #0d3d3c !important;
+}
 
 /* Page background */
 body.dark .chat-content 
@@ -707,15 +739,9 @@ body.dark .msg-sender
 body.dark .msg-time 
 { color: #99b6ad; }
 
-/* Chat footer bar (input area) */
-body.dark .input-bar 
-{ background: #0d3d3c3e !important;             
-  border: 2px solid #157266; }
-
 /* Chat text input box */
 body.dark .chat-input 
-{ border-color:#157266;          
-  --color: #ffffff;
+{  --color: #000000 !important;
   &:focus-within { border-color: #4cbc99 !important; } }
 
 /* content sent preview bar */
