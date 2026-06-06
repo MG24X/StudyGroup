@@ -342,15 +342,4 @@ ion-footer.chat-footer:not(.keyboard-open)
 
   .msg-avatar--photo { object-fit: cover; }  
   
-  @media (min-width: 768px)
-  {  
-
-
-.chat-input{&::part(textarea) {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }}}
+ 

@@ -31,6 +31,11 @@
 
 *{ font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
+
+// Hide native browser password eye icon
+input::-ms-reveal,
+input::-ms-clear { display: none !important; }
+
 //top header for mobile
 ion-toolbar { --min-height: 60px !important; }
 
@@ -741,7 +746,7 @@ body.dark .msg-time
 
 /* Chat text input box */
 body.dark .chat-input 
-{  --color: #000000 !important;
+{  --color: #ffffff !important;
   &:focus-within { border-color: #4cbc99 !important; } }
 
 /* content sent preview bar */
