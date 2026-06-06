@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar class="create-toolbar">
+    <ion-buttons slot="end" class="profile-nav-btn">
+     <ion-button fill="clear" (click)="openMenu()">
+  <img *ngIf="profilePhotoUrl"
+       [src]="profilePhotoUrl"
+       class="toolbar-avatar" />
+  <div *ngIf="!profilePhotoUrl" class="toolbar-avatar toolbar-avatar--initials">
+    {{ userName?.charAt(0)?.toUpperCase() }}
+  </div>
+     </ion-button>
+    </ion-buttons>
+    <ion-title>New Study Group</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="create-content">
+  <div class="create-form">
+    <div class="create-card">
+
+      <!-- header -->
+      <div class="form-header">
+        <h2>Create a new Study Group</h2>
+        <p>Fill in the details and submit for approval</p>
+      </div>
+
+      <!-- error / success -->
+      <div class="error-box" *ngIf="errorMsg">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        {{ errorMsg }}
+      </div>
+      <div class="success-box" *ngIf="successMsg">
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+        {{ successMsg }}
+      </div>
+
+      <!-- group name -->
+      <div class="field-group">
+        <label class="field-label">Group Name *</label>
+        <div class="field-wrap">
+          <ion-input [(ngModel)]="groupName"
+                     type="text"
+                     placeholder="Algorithm Study Group..."
+                     class="field-input">
+          </ion-input>
+        </div>
+      </div>
+
+      <!-- subject -->
+      <div class="field-group">
+        <label class="field-label">Subject *</label>
+        <div class="field-wrap">
+          <ion-input [(ngModel)]="subject"
+                     type="text"
+                     placeholder="Data Structures..."
+                     class="field-input">
+          </ion-input>
+        </div>
+      </div>
+
+      <!-- description -->
+      <div class="field-group">
+        <label class="field-label">Description</label>
+        <div class="field-wrap field-wrap--textarea">
+          <ion-textarea [(ngModel)]="description"
+                        placeholder="What will this group study?"
+                        rows="3"
+                        class="field-input">
+          </ion-textarea>
+        </div>
+      </div>
+
+      <!-- submit button -->
+      <ion-button expand="block" class="submit-btn"
+                  (click)="createGroup()" [disabled]="loading">
+        <ion-spinner name="crescent" *ngIf="loading"></ion-spinner>
+        <span *ngIf="!loading">Submit for Approval</span>
+      </ion-button>
+
+    </div>
+  </div>
+</ion-content>

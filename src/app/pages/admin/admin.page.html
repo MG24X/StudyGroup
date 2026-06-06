@@ -1,0 +1,149 @@
+<ion-header>
+  <ion-toolbar class="admin-toolbar">
+    <ion-title>Admin Panel</ion-title>
+        <ion-buttons slot="end" class="profile-nav-btn">
+     <ion-button fill="clear" (click)="openMenu()">
+  <img *ngIf="profilePhotoUrl"
+       [src]="profilePhotoUrl"
+       class="toolbar-avatar" />
+  <div *ngIf="!profilePhotoUrl" class="toolbar-avatar toolbar-avatar--initials">
+    {{ userName?.charAt(0)?.toUpperCase() }}
+  </div>
+</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar class="segment-toolbar">
+    <ion-segment [(ngModel)]="activeTab" (ionChange)="onTabChange()">
+      <ion-segment-button value="requests">
+        <ion-icon name="person-add-outline"></ion-icon>
+        <ion-label>
+          Requests
+          <ion-badge color="danger" *ngIf="allPendingRequests.length > 0">
+            {{ allPendingRequests.length }}
+          </ion-badge>
+        </ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="resources">
+        <ion-icon name="document-outline"></ion-icon>
+        <ion-label>
+          Resources
+          <ion-badge color="danger" *ngIf="pendingResources.length > 0">
+            {{ pendingResources.length }}
+          </ion-badge>
+        </ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="admin-content">
+
+  <!-- Join Requests tab -->
+  <div *ngIf="activeTab === 'requests'">
+    <div class="admin-section">
+      <div class="admin-section__title">
+        <ion-icon name="person-add-outline"></ion-icon>
+        Pending Join Requests ({{ allPendingRequests.length }})
+      </div>
+
+      <div class="empty-note" *ngIf="allPendingRequests.length === 0">
+        No pending join requests.
+      </div>
+
+      <div class="admin-card" *ngFor="let req of allPendingRequests">
+        <img *ngIf="req.profiles?.photo_url"
+             [src]="req.profiles.photo_url"
+             [alt]="req.profiles?.name"
+             class="user-photo" />
+        <div class="user-avatar" *ngIf="!req.profiles?.photo_url">
+          <span>{{ req.profiles?.name?.charAt(0)?.toUpperCase() }}</span>
+        </div>
+        <div class="admin-card__body">
+          <div class="admin-card__name">{{ req.profiles?.name }}</div>
+          <div class="admin-card__sub">
+          <strong>{{ req.groups?.name }}</strong>
+          </div>
+        </div>
+        <div class="admin-card__actions">
+          <button class="action-btn action-btn--approve" (click)="approveRequest(req)">
+            Approve
+          </button>
+          <button class="action-btn action-btn--delete" (click)="rejectRequest(req)">
+            Reject
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resources Validation tab -->
+  <div *ngIf="activeTab === 'resources'">
+    <div class="admin-section">
+      <div class="admin-section__title">
+        <ion-icon name="document-outline"></ion-icon>
+        Pending Resources ({{ pendingResources.length }})
+      </div>
+
+      <div class="empty-note" *ngIf="pendingResources.length === 0">
+        No pending resources.
+      </div>
+<!-- Replace only the resource card block in your admin HTML -->
+
+<div class="admin-card admin-card--resource" *ngFor="let res of pendingResources">
+
+  <div class="resource-card-top">
+    <div class="user-avatar">
+      <ion-icon name="document-outline" style="font-size:18px; color:#ffffff"></ion-icon>
+    </div>
+    <div class="admin-card__body">
+      <div class="admin-card__name">{{ res.file_name }}</div>
+      <div class="admin-card__sub">
+        Submitted {{ res.created_at | date:'dd MMM yyyy' }}
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-card__actions">
+    <button class="action-btn action-btn--view" (click)="viewResource(res)">
+      <ion-icon name="eye-outline"></ion-icon>
+      View
+    </button>
+    <button class="action-btn action-btn--approve" (click)="approveResource(res)">
+      Approve
+    </button>
+    <button class="action-btn action-btn--delete" (click)="rejectResource(res)">
+      Reject
+    </button>
+  </div>
+</div>
+</div>
+     
+  </div>
+
+  <!-- File viewer modal -->
+  <ion-modal [isOpen]="viewerOpen" (didDismiss)="viewerOpen = false">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar class="admin-toolbar">
+          <ion-title>{{ viewerFileName }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button fill="clear" (click)="viewerOpen = false">
+              <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <img *ngIf="isImage(viewerFileName)"
+             [src]="viewerUrl"
+             class="viewer-img"
+             alt="Preview" />
+        <iframe *ngIf="!isImage(viewerFileName)"
+                [src]="safeViewerUrl"
+                style="width:100%; height:100%; border:none; display:block;">
+        </iframe>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>

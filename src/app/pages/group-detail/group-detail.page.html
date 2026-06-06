@@ -1,0 +1,104 @@
+<ion-header>
+  <ion-toolbar class="detail-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'/tabs/chat/' + groupId" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ group?.name || 'Group' }}</ion-title>
+    <ion-buttons slot="end" *ngIf="isLeader">
+      <ion-button (click)="goToManage()">
+        <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="detail-content">
+
+  <div class="loading-wrap" *ngIf="loading">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </div>
+
+  <div *ngIf="!loading && group">
+    <div class="desktop-layout">
+
+      <div class="desktop-top-row">
+
+        <div class="info-card">
+          <div class="info-card__media">
+            <img *ngIf="group.photo_url"
+                 [src]="group.photo_url"
+                 class="info-card__photo"
+                 alt="Group" />
+            <div *ngIf="!group.photo_url" class="info-card__icon">
+              <ion-icon name="book-outline"></ion-icon>
+            </div>
+          </div>
+          <div class="info-card__body">
+            <div class="info-card__name">{{ group.name }}</div>
+            <div class="info-card__row">
+              <div class="info-card__subject">{{ group.subject }}</div>
+            </div>
+            <div class="info-card__desc" *ngIf="group.description">
+              {{ group.description }}
+            </div>
+            <div class="info-card__meta">
+              <ion-icon name="person-outline"></ion-icon>
+              <span>Admin : {{ leaderName }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-section" *ngIf="memberStatus === 'accepted'">
+          <button class="action-tile" (click)="goToResources()">
+            <ion-icon name="folder-open-outline"></ion-icon>
+            <span>Resources</span>
+          </button>
+        </div>
+
+      </div>
+
+      <div class="desktop-bottom">
+
+        <div class="action-section action-section--join" *ngIf="memberStatus === 'none'">
+          <ion-button expand="block" class="join-btn" (click)="joinGroup()">
+            <ion-icon slot="start" name="enter-outline"></ion-icon>
+            Request to Join
+          </ion-button>
+        </div>
+
+        <div class="status-banner status-banner--pending"
+             *ngIf="memberStatus === 'pending'">
+          <ion-icon name="time-outline"></ion-icon>
+          <span>Your join request is waiting for the leader's approval.</span>
+        </div>
+
+        <div class="members-section"
+             *ngIf="memberStatus === 'accepted' && members.length > 0">
+          <div class="members-title">
+            <ion-icon name="people-outline"></ion-icon>
+            <span>Members ({{ members.length }})</span>
+          </div>
+          <div class="member-item" *ngFor="let m of members">
+            <div class="member-avatar">
+              <img *ngIf="m.profiles?.photo_url"
+                   [src]="m.profiles.photo_url" alt="avatar" />
+              <span *ngIf="!m.profiles?.photo_url">
+                {{ m.profiles?.name?.charAt(0)?.toUpperCase() }}
+              </span>
+            </div>
+            <div class="member-info">
+              <div class="member-name">{{ m.profiles?.name }}</div>
+              <div class="member-meta">{{ m.profiles?.matricule }}</div>
+            </div>
+            <div class="member-tag" *ngIf="m.user_id === group?.leader_id">
+              Admin
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</ion-content>

@@ -1,0 +1,112 @@
+<ion-header>
+  <ion-toolbar class="resources-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button text="" [defaultHref]="'/tabs/group-detail/' + groupId"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Resources</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="resources-content">
+  <div class="upload-section">
+    <ion-button expand="block" class="upload-btn"
+                (click)="triggerFilePicker()" [disabled]="uploading">
+      <ion-spinner name="crescent" *ngIf="uploading"></ion-spinner>
+      <ion-icon slot="start" name="cloud-upload-outline" *ngIf="!uploading"></ion-icon>
+      <span>{{ uploading ? 'Loading...' : 'Upload File' }}</span>
+    </ion-button>
+    <input type="file" #fileInput style="display:none" (change)="onFileSelected($event)" />
+  </div>
+
+  <div class="loading-wrap" *ngIf="loading">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </div>
+
+  <!-- pending files — visible to uploader only -->
+  <div *ngIf="pendingResources.length > 0">
+    <div class="section-label">
+      <ion-icon name="time-outline"></ion-icon>
+      Awaiting Approval ({{ pendingResources.length }})
+    </div>
+    <div class="file-list">
+      <div class="file-item file-item--pending" *ngFor="let res of pendingResources">
+        <div class="file-item__icon">
+          <ion-icon [name]="getFileIcon(res.file_name)"></ion-icon>
+        </div>
+        <div class="file-item__body">
+          <div class="file-item__name">{{ res.file_name }}</div>
+          <div class="file-item__date">Pending approval</div>
+        </div>
+        <div class="file-item__actions">
+          <button class="icon-btn icon-btn--delete"
+                  *ngIf="res.uploaded_by === currentUserId || isLeader"
+                  (click)="deleteFile(res)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- approved files — visible to everyone -->
+  <div class="empty-state" *ngIf="!loading && resources.length === 0">
+    <ion-icon name="folder-open-outline"></ion-icon>
+    <h3>No resources available yet</h3>
+    <p>Upload a file to share with the group</p>
+  </div>
+
+  <div class="file-list" *ngIf="!loading && resources.length > 0">
+    <div class="file-item" *ngFor="let res of resources">
+      <div class="file-item__icon">
+        <ion-icon [name]="getFileIcon(res.file_name)"></ion-icon>
+      </div>
+      <div class="file-item__body">
+        <div class="file-item__name">{{ res.file_name }}</div>
+        <div class="file-item__date">{{ res.created_at | date:'dd MMM yyyy' }}</div>
+      </div>
+      <div class="file-item__actions">
+        <button class="icon-btn icon-btn--view"
+                *ngIf="isViewable(res.file_name)"
+                (click)="viewFile(res)">
+          <ion-icon name="eye-outline"></ion-icon>
+        </button>
+        <button class="icon-btn icon-btn--download"
+                (click)="downloadFile(res.file_url, res.file_name)">
+          <ion-icon name="download-outline"></ion-icon>
+        </button>
+        <button class="icon-btn icon-btn--delete"
+                *ngIf="res.uploaded_by === currentUserId || isLeader"
+                (click)="deleteFile(res)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- viewer modal -->
+  <ion-modal [isOpen]="viewerOpen" (didDismiss)="viewerOpen = false">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar class="viewer-toolbar">
+          <ion-title>{{ viewerFileName }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="viewerOpen = false" fill="clear">
+              <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="viewer-content">
+        <img *ngIf="isImage(viewerFileName)"
+             [src]="viewerUrl"
+             class="viewer-img"
+             alt="Preview" />
+        <iframe *ngIf="!isImage(viewerFileName)"
+                [src]="safeViewerUrl"
+                style="width:100%; height:100%; border:none; display:block;">
+        </iframe>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>

@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar class="discover-toolbar">
+          <ion-buttons slot="end" class="profile-nav-btn">
+     <ion-button fill="clear" (click)="openMenu()">
+  <img *ngIf="profilePhotoUrl"
+       [src]="profilePhotoUrl"
+       class="toolbar-avatar" />
+  <div *ngIf="!profilePhotoUrl" class="toolbar-avatar toolbar-avatar--initials">
+    {{ userName?.charAt(0)?.toUpperCase() }}
+  </div>
+</ion-button>
+    </ion-buttons>
+    <ion-title>Discover</ion-title>
+  </ion-toolbar>
+  <ion-toolbar class="search-toolbar">
+    <ion-searchbar
+      [(ngModel)]="searchTerm"
+      (ionInput)="applyFilters()"
+      placeholder="Search by name or subject..."
+      class="custom-searchbar">
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="discover-content">
+  <!-- loading -->
+  <div class="loading-wrap" *ngIf="loading">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </div>
+
+  <!-- empty state -->
+  <div class="empty-state" *ngIf="!loading && filteredGroups.length === 0">
+    <ion-icon name="compass-outline"></ion-icon>
+    <h3>No groups found</h3>
+    <p>Try a different search or subject</p>
+  </div>
+
+  <!-- groups list -->
+  <div class="groups-list">
+    <div class="group-card"
+         *ngFor="let group of filteredGroups"
+         (click)="onCardClick(group)">
+
+      <div class="group-card__icon" [class.group-card__icon--photo]="group.photo_url">
+        <img *ngIf="group.photo_url" [src]="group.photo_url" class="group-photo" alt="Group" />
+        <ion-icon *ngIf="!group.photo_url" name="book-outline"></ion-icon>
+      </div>
+
+      <div class="group-card__body">
+        <div class="group-card__name">{{ group.name }}</div>
+        <div class="group-card__subject">{{ group.subject }}</div>
+      </div>
+
+      <!-- accepted: arrow -->
+      <ion-icon
+        *ngIf="group.memberStatus === 'accepted'"
+        name="chevron-forward-outline"
+        class="group-card__arrow">
+      </ion-icon>
+
+      <!-- none: join button -->
+      <button
+        *ngIf="group.memberStatus === 'none'"
+        class="join-pill"
+        (click)="requestJoin($event, group)">
+        <ion-icon name="enter-outline"></ion-icon>
+        Join
+      </button>
+
+      <!-- pending -->
+      <span *ngIf="group.memberStatus === 'pending'" class="pending-pill">
+        <ion-icon name="time-outline"></ion-icon>
+        Pending
+      </span>
+
+    </div>
+  </div>
+
+</ion-content>

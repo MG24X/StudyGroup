@@ -1,0 +1,105 @@
+<ion-header>
+  <ion-toolbar class="manage-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button text=""
+        [defaultHref]="'/tabs/group-detail/' + groupId">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Group Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="manage-content">
+
+  <div class="manage-form">
+
+    <div class="section-card">
+      <div class="section-header">
+        <ion-icon name="create-outline"></ion-icon>
+        <h3>Edit Group Info</h3>
+      </div>
+
+      <div class="group-photo-section">
+        <div class="group-photo-wrap" (click)="changeGroupPhoto()">
+          <img *ngIf="groupPhotoUrl"
+               [src]="groupPhotoUrl"
+               class="group-photo-preview"
+               alt="Group" />
+          <div class="group-photo-placeholder" *ngIf="!groupPhotoUrl">
+            <ion-icon name="image-outline"></ion-icon>
+            <span>Add Photo</span>
+          </div>
+          <div class="group-photo-badge">
+            <ion-icon name="camera-outline"></ion-icon>
+          </div>
+        </div>
+        <input type="file" #groupPhotoInput accept="image/*"
+               style="display:none"
+               (change)="onGroupPhotoSelected($event)" />
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Group Name</label>
+        <div class="field-wrap">
+          <ion-input [(ngModel)]="groupName" class="field-input"
+                     placeholder="Enter group name">
+          </ion-input>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Subject</label>
+        <div class="field-wrap">
+          <ion-input [(ngModel)]="groupSubject" class="field-input"
+                     placeholder="Enter subject">
+          </ion-input>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Description</label>
+        <div class="field-wrap field-wrap--textarea">
+          <ion-textarea [(ngModel)]="groupDescription" rows="3"
+                        class="field-input"
+                        placeholder="Enter description">
+          </ion-textarea>
+        </div>
+      </div>
+
+      <ion-button expand="block" class="save-btn" (click)="updateGroup()">
+        Save Changes
+      </ion-button>
+    </div>
+
+    <div class="members-section">
+      <div class="members-header">
+        <ion-icon name="people-outline"></ion-icon>
+        <h3>Members ({{ acceptedMembers.length }})</h3>
+      </div>
+
+      <div class="empty-note" *ngIf="acceptedMembers.length === 0">
+        No members yet.
+      </div>
+
+      <div class="member-item" *ngFor="let m of acceptedMembers">
+        <div class="member-avatar">
+          <img *ngIf="m.profiles?.photo_url"
+               [src]="m.profiles.photo_url" alt="avatar" />
+          <span *ngIf="!m.profiles?.photo_url">
+            {{ m.profiles?.name?.charAt(0)?.toUpperCase() }}
+          </span>
+        </div>
+        <div class="member-info">
+          <div class="member-name">{{ m.profiles?.name }}</div>
+          <div class="member-meta">{{ m.profiles?.matricule }}</div>
+        </div>
+        <button class="remove-btn" (click)="removeMember(m)">
+          <ion-icon name="person-remove-outline"></ion-icon>
+          Remove
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</ion-content>

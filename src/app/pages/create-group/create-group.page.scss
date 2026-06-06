@@ -1,0 +1,166 @@
+* { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+.create-toolbar {
+  --background: #157266;
+  --color: #ffffff;
+  ion-title { font-weight: 700; } }
+
+.create-content { --background: #99dfcf; }
+
+.create-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px; }
+
+.create-card {
+  margin-top: 20px;
+  width: 100%;
+  height: auto;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+
+// card header with icon
+.form-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1.5px solid #b8f8e0;
+
+  h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+    text-align: center;
+    letter-spacing: -0.3px; }
+
+  p {
+    font-size: 14px;
+    color: #000000;
+    margin: 0;
+    text-align: center; } }
+
+// error and success messages
+.error-box, .success-box {
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  width: 100%;
+  ion-icon { font-size: 18px; flex-shrink: 0; } }
+
+.error-box {
+  background: #fdd4e3;
+  color: #b8235c; }
+
+.success-box {
+  background: #d7f5e0;
+  color: #15803d; }
+
+// form fields
+.field-group { margin-bottom: 16px; width: 100%; }
+
+.field-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000000;
+  display: block;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px; }
+
+.field-wrap {
+  height: 50px;
+  width: 100%;
+  border: 1.5px solid #c8ece0;
+  border-radius: 14px;
+  padding: 2px 12px;
+  background: #f8fffe;
+  transition: border-color 0.2s, background 0.2s;
+
+  &--textarea { height: 110px; padding: 6px 12px; }
+
+  &:focus-within {
+    border-color: #4cbc99;
+    background: #f0fdf9; }
+
+  .field-input {
+    --padding-bottom: 4px;
+    font-size: 16px;
+    --color: #000000;
+    --placeholder-color: #94a3b8; } }
+
+// submit button
+.submit-btn {
+  --background: #1f9686;
+  --background-activated: #157266;
+  --border-radius: 20px;
+  height: 54px;
+  width: 90%;
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 8px;
+  letter-spacing: 0.3px; }
+
+    //sidebar profile photo
+  .toolbar-avatar 
+{ width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #4fe0b5;
+
+  //no pfp
+  &--initials {
+    background: linear-gradient(135deg, #97e5db, #157266);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center; } }
+
+
+////////////////////  DESKTOP UI  ///////////////////////    
+    @media (min-width: 768px) {
+  .toolbar-avatar { display: none !important; }
+
+  .create-form { justify-content: center; min-height: 100%; }
+
+  .create-card {
+    width: 480px;
+    height: auto;  // adjust to the content
+    margin-top: 0;
+    padding: 28px 32px; }
+
+  .field-wrap {
+    width: 100%;
+    &--textarea { height: 90px; } }
+
+  .field-label { font-size: 14px; }
+
+  .form-header {
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    gap: 8px; 
+
+    h2 { font-size: 25px; }
+    p  { font-size: 13px; } }
+
+  .submit-btn 
+  { height: 46px; 
+    width: 280px;
+    font-size: 14px; } }

@@ -1,0 +1,94 @@
+* { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+.welcome-content {
+  --background: linear-gradient(135deg, #0d6b5e 0%, #157266 25%, #1fa896 50%, #4fd4c4 80%, #7ee8e0 100%);
+}
+
+.welcome-wrap {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px; 
+  position: relative;
+}
+
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  padding-bottom: 60px;
+}
+
+.logo-image {
+  width: 120px !important;
+  height: 120px !important;
+  border-radius: 50px;
+  object-fit: cover;
+  background: #ffffff;
+  padding: 6px;
+  margin-bottom: 10px;
+  box-shadow: 5px rgb(255, 255, 255); }
+
+.hero-headline {
+  font-size: 48px;
+  font-weight: 900;
+  color: #ffffff;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.12);
+
+  span { color: #a8f5e8; } 
+}
+
+.hero-sub {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.6;
+  max-width: 600px;
+  margin-bottom: 50px;
+}
+
+.get-started-btn {
+
+  align-items: center;
+  text-align: center;
+  width: 300px;
+  gap: 10px;
+  height: 54px;
+  border-radius: 50px; 
+  background: linear-gradient(135deg, #1e9182 0%, #32d19f 100%); 
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+
+  ion-icon {
+    font-size: 22px;
+    transition: transform 0.2s ease;}
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.637);
+    color : #32d19f ;
+    background : #ffffff;
+    ion-icon { transform: translateX(5px); }}
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.welcome-footer {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+}

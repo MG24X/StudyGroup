@@ -1,0 +1,162 @@
+<div class="app-layout">
+
+  <nav class="desktop-sidenav">
+    <div class="desktop-sidenav__brand">
+      <img src="assets/icon/logo_design.png" alt="Logo" class="desktop-sidenav__logo" />
+      <span>StudyGroup</span>
+    </div>
+    <div class="desktop-sidenav__links">
+      <a class="desktop-sidenav__item" routerLink="/tabs/groups" routerLinkActive="desktop-sidenav__item--active">
+        <ion-icon name="people-outline"></ion-icon>
+        <span>My Groups</span>
+      </a>
+      <a class="desktop-sidenav__item" routerLink="/tabs/discover" routerLinkActive="desktop-sidenav__item--active">
+        <ion-icon name="compass-outline"></ion-icon>
+        <span>Discover</span>
+      </a>
+      <a class="desktop-sidenav__item" routerLink="/tabs/create-group" routerLinkActive="desktop-sidenav__item--active">
+        <ion-icon name="add-circle-outline"></ion-icon>
+        <span>New Group</span>
+      </a>
+      <a *ngIf="isAdmin" class="desktop-sidenav__item" routerLink="/tabs/admin" routerLinkActive="desktop-sidenav__item--active">
+        <ion-icon name="shield-checkmark-outline"></ion-icon>
+        <span>Admin</span>
+      </a>
+      <a *ngIf="isSuperAdmin" class="desktop-sidenav__item" routerLink="/tabs/superadmin" routerLinkActive="desktop-sidenav__item--active">
+        <ion-icon name="ribbon-outline"></ion-icon>
+        <span>System Admin</span>
+      </a>
+    </div>
+  </nav>
+
+  <div class="app-main">
+
+    <ion-menu contentId="main-content" side="end" type="overlay" swipe-gesture="false">
+      <ion-header>
+        <ion-toolbar class="menu-toolbar">
+          <ion-title>My profile</ion-title>
+          <ion-buttons slot="end">
+            <!-- Option A: pill toggle button -->
+            <button class="theme-pill" (click)="themeService.toggle()">
+              <ion-icon [name]="themeService.isDark() ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+              <span>{{ themeService.isDark() ? 'Light mode' : 'Dark mode' }}</span>
+            </button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="menu-content">
+        <div class="profile-section">
+
+          <!-- Avatar -->
+          <div class="avatar-wrap" (click)="changeProfilePhoto()">
+            <img class="avatar-img" *ngIf="profilePhotoUrl" [src]="profilePhotoUrl" alt="Profile" />
+            <div class="avatar-initials" *ngIf="!profilePhotoUrl">{{ userName?.charAt(0)?.toUpperCase() }}</div>
+            <div class="avatar-camera"><ion-icon name="camera-outline"></ion-icon></div>
+          </div>
+
+          <!-- Name -->
+          <div class="name-row" *ngIf="!editingName">
+            <span class="profile-name">{{ userName }}</span>
+            <button class="edit-btn" (click)="startEditName()"><ion-icon name="pencil-outline"></ion-icon></button>
+          </div>
+          <div class="name-edit" *ngIf="editingName">
+            <ion-input [(ngModel)]="newName" class="name-input" placeholder="Change name"></ion-input>
+            <div class="edit-row">
+              <button class="confirm-btn" (click)="saveName()">Confirm <ion-icon name="checkmark-outline"></ion-icon></button>
+              <button class="cancel-btn" (click)="editingName = false">Cancel <ion-icon name="close-outline"></ion-icon></button>
+            </div>
+          </div>
+
+          <!-- Info rows (option A style) -->
+          <div class="info-rows">
+            <div class="info-row">
+              <ion-icon name="id-card-outline"></ion-icon>
+              <div>
+                <div class="info-row__label">Matricule</div>
+                <div class="info-row__val">{{ userMatricule }}</div>
+              </div>
+            </div>
+            <div class="info-row">
+              <ion-icon name="mail-outline"></ion-icon>
+              <div>
+                <div class="info-row__label">Email</div>
+                <div class="info-row__val">{{ userEmail }}</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Logout -->
+        <div class="menu-footer">
+          <ion-menu-toggle>
+            <button class="logout-btn" (click)="logout()">
+              <ion-icon name="log-out-outline"></ion-icon>
+              Log out
+            </button>
+          </ion-menu-toggle>
+        </div>
+
+      </ion-content>
+    </ion-menu>
+
+    <ion-tabs id="main-content">
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button tab="groups">
+          <ion-icon name="people-outline"></ion-icon>
+          <ion-label>My Groups</ion-label>
+        </ion-tab-button>
+        <ion-tab-button tab="discover">
+          <ion-icon name="compass-outline"></ion-icon>
+          <ion-label>Discover</ion-label>
+        </ion-tab-button>
+        <ion-tab-button tab="create-group">
+          <ion-icon name="add-circle-outline"></ion-icon>
+          <ion-label>Create</ion-label>
+        </ion-tab-button>
+        <ion-tab-button tab="admin" [hidden]="!isAdmin">
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+          <ion-label>Admin</ion-label>
+        </ion-tab-button>
+        <ion-tab-button tab="superadmin" [hidden]="!isSuperAdmin">
+          <ion-icon name="ribbon-outline"></ion-icon>
+          <ion-label>System</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+
+  </div>
+
+  <div class="desktop-profile-panel">
+    <div class="desktop-profile-panel__avatar-wrap" (click)="changeProfilePhoto()">
+      <img *ngIf="profilePhotoUrl" [src]="profilePhotoUrl" class="desktop-profile-panel__avatar-img" alt="Profile" />
+      <div *ngIf="!profilePhotoUrl" class="desktop-profile-panel__avatar-initials">{{ userName?.charAt(0)?.toUpperCase() }}</div>
+      <div class="desktop-profile-panel__avatar-camera"><ion-icon name="camera-outline"></ion-icon></div>
+    </div>
+    <div class="desktop-profile-panel__name-row" *ngIf="!editingName">
+      <span class="desktop-profile-panel__name">{{ userName }}</span>
+      <button class="desktop-profile-panel__edit-btn" (click)="startEditName()"><ion-icon name="pencil-outline"></ion-icon></button>
+    </div>
+    <div class="desktop-profile-panel__name-edit" *ngIf="editingName">
+      <ion-input [(ngModel)]="newName" class="name-input" placeholder="Change name"></ion-input>
+      <div class="edit-row">
+        <button class="confirm-btn" (click)="saveName()">Confirm <ion-icon name="checkmark-outline"></ion-icon></button>
+        <button class="cancel-btn" (click)="editingName = false">Cancel <ion-icon name="close-outline"></ion-icon></button>
+      </div>
+    </div>
+    <div class="desktop-profile-panel__badge">Matricule : {{ userMatricule }}</div>
+    <div class="desktop-profile-panel__email">Email : {{ userEmail }}</div>
+    <div class="desktop-profile-panel__footer">
+      <button class="desktop-profile-panel__theme-btn" (click)="themeService.toggle()">
+        <ion-icon [name]="themeService.isDark() ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+        <span>{{ themeService.isDark() ? 'Light mode' : 'Dark mode' }}</span>
+      </button>
+      <button class="desktop-profile-panel__logout-btn" (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+        <span>Log out</span>
+      </button>
+    </div>
+  </div>
+
+</div>

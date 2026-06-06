@@ -1,0 +1,197 @@
+<ion-header>
+  <ion-toolbar class="chat-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="/tabs/groups"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ groupName }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToDetail()">
+        <ion-icon name="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="chat-content" #chatContent>
+
+  <!-- loading -->
+  <div class="loading-wrap" *ngIf="loading">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </div>
+
+  <!-- empty state -->
+  <div class="chat-empty" *ngIf="!loading && messages.length === 0 && !activeCall">
+    <ion-icon name="chatbubbles-outline"></ion-icon>
+    <p>Start texting</p>
+  </div>
+
+  <!-- messages -->
+  <div class="messages-wrap">
+    <div class="message-row"
+         *ngFor="let msg of messages"
+         [class.message-row--own]="msg.sender_id === currentUserId">
+
+      <img *ngIf="msg.sender_id !== currentUserId && msg.sender_photo"
+     [src]="msg.sender_photo"
+     class="msg-avatar msg-avatar--photo"
+     alt="avatar" />
+<div class="msg-avatar" *ngIf="msg.sender_id !== currentUserId && !msg.sender_photo">
+  {{ msg.sender_name?.charAt(0).toUpperCase() }}
+</div>
+
+      <div class="msg-content">
+        <div class="msg-sender" *ngIf="msg.sender_id !== currentUserId">
+          {{ msg.sender_name }}
+        </div>
+
+        <!-- text -->
+        <div class="msg-bubble"
+             *ngIf="msg.message_type === 'text' || !msg.message_type"
+             [class.msg-bubble--incoming]="msg.sender_id !== currentUserId"
+             [class.msg-bubble--own]="msg.sender_id === currentUserId">
+          {{ msg.text }}
+        </div>
+
+        <!-- file -->
+        <div class="msg-bubble msg-bubble--file"
+             *ngIf="msg.message_type === 'file'"
+             [class.msg-bubble--incoming]="msg.sender_id !== currentUserId"
+             [class.msg-bubble--own]="msg.sender_id === currentUserId">
+          <ion-icon name="document-outline"></ion-icon>
+          <span class="file-msg-name">{{ msg.file_name }}</span>
+          <div class="file-msg-actions">
+            <button class="file-action-btn" (click)="viewFile(msg)"
+                    *ngIf="isViewable(msg.file_name)">
+              <ion-icon name="eye-outline"></ion-icon>
+            </button>
+            <button class="file-action-btn"
+                    (click)="downloadFile(msg.file_url, msg.file_name)">
+              <ion-icon name="download-outline"></ion-icon>
+            </button>
+          </div>
+        </div>
+
+      <!-- voice -->
+<div class="msg-bubble msg-bubble--voice"
+     *ngIf="msg.message_type === 'voice'"
+     [class.msg-bubble--incoming]="msg.sender_id !== currentUserId"
+     [class.msg-bubble--own]="msg.sender_id === currentUserId">
+
+  <div class="voice-msg" *ngIf="msg.voice_url"
+       [class.voice-msg--incoming]="msg.sender_id !== currentUserId">
+
+    <ion-icon name="mic-outline"
+              [style.color]="msg.sender_id !== currentUserId ? '#000000' : '#ffffff'">
+    </ion-icon>
+
+    <button class="voice-play" (click)="toggleVoice(msg)">
+      <ion-icon [name]="msg.isPlaying ? 'pause' : 'play'"></ion-icon>
+    </button>
+
+    <div class="voice-bars"
+         [class.voice-bars--incoming]="msg.sender_id !== currentUserId"
+         [class.voice-bars--own]="msg.sender_id === currentUserId">
+      <span class="voice-bar"
+            *ngFor="let h of waveformBars; let i = index"
+            [style.height.px]="h"
+            [class.voice-bar--played]=" (i / waveformBars.length * 100) <= (msg.voiceProgressPercent || 0)"
+            [class.voice-bar--incoming]="msg.sender_id !== currentUserId">
+      </span>
+    </div>
+
+    <span class="voice-time"
+          [class.voice-time--incoming]="msg.sender_id !== currentUserId"
+          [class.voice-time--own]="msg.sender_id === currentUserId">
+      {{ msg.voiceProgress || msg.voiceDuration || '0:00' }}
+    </span>
+
+  </div>
+</div>
+        <div class="msg-time">{{ msg.created_at | date:'HH:mm' }}</div>
+      </div>
+    </div>
+  </div>
+
+</ion-content>
+
+<!-- file / image view  -->
+<ion-modal [isOpen]="viewerOpen" (didDismiss)="viewerOpen = false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar class="viewer-toolbar">
+        <ion-title>{{ viewerFileName }}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="viewerOpen = false" fill="clear">
+            <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="viewer-content">
+      <img *ngIf="isImage(viewerFileName)"
+           [src]="viewerUrl"
+           class="viewer-img"
+           alt="Preview" />
+      <iframe *ngIf="!isImage(viewerFileName)"
+              [src]="safeViewerUrl"
+              style="width:100%; height:100%; border:none; display:block;">
+      </iframe>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+
+
+<!-- chat footer -->
+<ion-footer class="chat-footer">
+
+  <!-- file attachment preview -->
+  <div class="attachment-preview" *ngIf="pendingFile">
+    <ion-icon name="document-outline"></ion-icon>
+    <span>{{ pendingFile.name }}</span>
+    <button class="remove-attachment" (click)="pendingFile = null">
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+  </div>
+
+  <div class="input-bar">
+
+    <!-- attach file -->
+    <button class="bar-btn bar-btn--attach"
+            (click)="triggerFileAttach()"
+            [disabled]="isRecording">
+      <ion-icon name="attach-outline"></ion-icon>
+    </button>
+    <input type="file" #fileAttachInput style="display:none"
+           (change)="onFileAttached($event)" />
+
+    <!-- message input  -->
+    <ion-textarea
+  [(ngModel)]="newMessage"
+  placeholder="Type a message..."
+  class="chat-input"
+  [autoGrow]="true"
+  rows="1"
+  maxlength="500"
+  [disabled]="isRecording || !!pendingFile">
+</ion-textarea>
+
+    <!-- voice record — hide when typing -->
+    <button class="bar-btn"
+            *ngIf="!newMessage.trim()"
+            [class.bar-btn--record]="!isRecording"
+            [class.bar-btn--stop]="isRecording"
+            (click)="toggleRecording()"
+            [disabled]="!!pendingFile">
+      <ion-icon [name]="isRecording ? 'stop-circle-outline' : 'mic-outline'"></ion-icon>
+    </button>
+
+   <!-- send -->
+    <button class="send-btn"
+            (click)="pendingFile ? sendFile() : sendMessage()"
+            [disabled]="!newMessage.trim() && !pendingFile && !isRecording">
+      <ion-icon name="send"></ion-icon>
+    </button>
+
+  </div>
+</ion-footer>

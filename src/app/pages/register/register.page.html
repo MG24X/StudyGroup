@@ -1,0 +1,89 @@
+<ion-content class="register-page">
+  <div class="register-hero">
+    <div class="register-icon-wrap">
+      <img src="assets/icon/logo_design.png" alt="Register Icon" class="register-icon">
+    </div>
+    <h1>Create an account</h1>
+  </div>
+
+  <div class="register-card">
+    <div class="error-alert" *ngIf="errorMsg">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      {{ errorMsg }}
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Name</label>
+      <div class="field-wrap">
+        <ion-icon name="person-outline" class="field-icon"></ion-icon>
+        <ion-input [(ngModel)]="name" type="text" placeholder="Ahmed Benali" class="field-input"></ion-input>
+      </div>
+    </div>
+
+    <!-- Matricule field with info bubble -->
+    <div class="field-group">
+      <div class="field-label-row">
+        <label class="field-label">Matricule</label>
+        <button class="info-btn" (click)="showMatriculeInfo = !showMatriculeInfo">
+          <ion-icon name="information-circle-outline"></ion-icon>
+        </button>
+      </div>
+
+      <div class="info-bubble" *ngIf="showMatriculeInfo">
+        Your matricule must be exactly 8 digits. Example : 20210042
+      </div>
+
+      <div class="field-wrap" [class.field-wrap--error]="matricule.length > 0 && !matriculeValid"
+                              [class.field-wrap--ok]="matriculeValid">
+        <ion-icon name="id-card-outline" class="field-icon"></ion-icon>
+        <ion-input
+          [value]="matricule"
+          (ionInput)="onMatriculeInput($event)"
+          type="tel"
+          placeholder="20210042"
+          maxlength="8"
+          class="field-input">
+        </ion-input>
+        <span class="char-count" [class.char-count--done]="matriculeValid">
+          {{ matricule.length }}/8
+        </span>
+      </div>
+
+      <div class="field-hint" *ngIf="matriculeError">{{ matriculeError }}</div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Email</label>
+      <div class="field-wrap">
+        <ion-icon name="mail-outline" class="field-icon"></ion-icon>
+        <ion-input [(ngModel)]="email" type="email" placeholder="example@gmail.com" class="field-input"></ion-input>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Password</label>
+       <div class="field-wrap">
+    <div class="password-wrap">
+      <ion-icon name="lock-closed-outline" class="field-icon"></ion-icon>
+        <ion-input [(ngModel)]="password"  
+          [type]="showPassword ? 'text' : 'password'"
+          placeholder="Min 6 characters"
+          class="field-input">
+        </ion-input>
+      <button type="button" class="toggle-password" (click)="togglePassword()">
+        <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+      </button>
+    </div>
+  </div>
+    </div>
+
+    <ion-button expand="block" class="primary-btn" (click)="register()" [disabled]="loading">
+      <ion-spinner name="crescent" *ngIf="loading"></ion-spinner>
+      <span *ngIf="!loading">Register</span>
+    </ion-button>
+
+    <ion-button expand="block" fill="clear" class="link-btn" routerLink="/login">
+      Already have an account? <strong>&nbsp;Sign In</strong>
+    </ion-button>
+  </div>
+</ion-content>

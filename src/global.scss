@@ -1,0 +1,957 @@
+
+/* ── Ionic required imports (do not remove) ── */
+@import "@ionic/angular/css/core.css";
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/* ── Ionic dark palette imports — all OFF  ── */
+/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+/* @import "@ionic/angular/css/palettes/dark.class.css";  */
+/* @import "@ionic/angular/css/palettes/dark.system.css"; */
+
+
+/* ============================================================
+ *  DARK MODE COLOR PALETTE
+ *
+ *  --dark-bg          → main page/content background
+ *  --dark-surface     → cards, list rows, panels
+ *  --dark-toolbar     → all headers and toolbars
+ *  --dark-text        → primary text colour
+ *  --dark-text-soft   → secondary / muted text
+ *  --dark-accent      → green accent (icons, borders, highlights)
+ *  --dark-border      → dividers and input borders
+ * ============================================================ */
+
+*{ font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+//top header for mobile
+ion-toolbar { --min-height: 60px !important; }
+
+//top header for desktop
+@media(min-width : 768px)
+{ ion-toolbar { --min-height: 60px !important; } }
+
+// black background issue
+app-chat {
+  --ion-background-color: #c0f9e6 !important;
+  background: #c0f9e6 !important; }
+
+
+/* Hide scrollbar completely across all pages */
+ion-content::part(scroll)::-webkit-scrollbar 
+{ display: none; }
+
+ion-content::part(scroll) {
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE / Edge */ }
+
+
+
+body.dark {
+
+  /* ── Ionic system CSS variables ── */
+  --ion-background-color:     #103b3a;   /* ← dark-bg */
+  --ion-background-color-rgb: 15, 23, 42;
+  --ion-text-color:           #ffffff;   /* ← dark-text */
+  --ion-text-color-rgb:       241, 245, 249;
+
+  --ion-item-background:      #1e293b;   /* ← dark-surface */
+  --ion-card-background:      #1e293b;
+  --ion-toolbar-background:   #0d4a3f;   /* ← dark-toolbar */
+  --ion-tab-bar-background:   #0d4a3f;
+
+  /* Ionic uses these step colours for borders, dividers, subtle tones */
+  --ion-color-step-50:  #1e293b;
+  --ion-color-step-100: #1e293b;
+  --ion-color-step-150: #1e2e2a;
+  --ion-color-step-200: #1f3530;
+  --ion-color-step-250: #213c37;
+  --ion-color-step-300: #24443e;
+  --ion-color-step-400: #2a5248;
+  --ion-color-step-500: #306058;
+  --ion-color-step-600: #3a7a6f;
+  --ion-color-step-700: #4a9989;
+  --ion-color-step-800: #6dbfad;
+  --ion-color-step-900: #99dfcf;
+  --ion-color-step-950: #c8ece0;
+}
+
+
+/* ============================================================
+ *  GLOBAL IONIC COMPONENTS (affect every page)
+ * ============================================================ */
+
+
+/* All ion-content page backgrounds */
+body.dark ion-content {
+  --background: #071e1d; }          /* ← change to adjust ALL page backgrounds */
+
+/* All toolbars / headers */
+body.dark ion-header ion-toolbar {
+  --background: #0d3d3c3e !important;           /* ← change to adjust ALL toolbar backgrounds */
+  --color: #ffffff;
+  border-bottom: 1px solid #157266; }
+
+
+/* Tab bar at the bottom */
+body.dark ion-tab-bar {
+  --background: #0d3d3c3e !important;           /* ← change to adjust tab bar background */
+  --color: #99dfcf;  }              /* ← change to adjust unselected tab icon/label */
+
+
+/* All Ionic list items */
+body.dark ion-item {
+  --background: #0d3d3c3e;
+  --color: #ffffff;
+  --border-color: #157266; }
+
+
+/* All Ionic cards */
+body.dark ion-card {
+  --background: #0d3d3c3e;
+  color: #ffffff; }
+ 
+
+/* All ion-lists */
+body.dark ion-list {
+  background: #0d3d3c3e; }
+
+
+/* All searchbars */
+body.dark ion-searchbar {
+  --background: #0d3d3c3e !important;
+  --color: #ffffff !important;
+  --box-shadow: 0 0 0 1.5px #157266 !important;
+  --border-radius: 15px !important;
+  --placeholder-color: #bec6c4 !important;    /* ← placeholder text colour */
+  --icon-color: #4cbc99 !important; }
+
+  body.dark ion-menu-button {
+  color: #4cbc99 !important; }
+
+/* All segment controls (tabs inside pages) */
+body.dark ion-segment {
+  --background: #0d3d3c3e !important; }
+
+  ////////////IDK
+body.dark ion-segment-button {
+  --color: #99dfcf !important;
+  --color-checked: #ffffff !important;
+  --indicator-color: #157266; }
+
+/* All inputs and textareas */
+body.dark ion-input,
+body.dark ion-textarea {
+  --color: #ffffff;
+  --placeholder-color: #6dbfad; }
+
+/* Badges */
+body.dark ion-badge {
+  --background: #0d3d3c3e !important; }
+
+
+/* ============================================================
+ *  SIDE MENU  (tabs.page — Profile slide menu)
+ * ============================================================ */
+
+/* Menu toolbar ("Profile" header) */
+body.dark ion-menu ion-toolbar {
+  --background: #0d3d3c3e !important; }
+
+/* Menu body background */
+body.dark ion-menu ion-content { 
+  --background: #071e1d !important; }
+
+/* Profile section container */
+body.dark .profile-section 
+{ background: #071e1d !important; }
+
+/* Profile name, email, matricule */
+body.dark .profile-name 
+{ color: #ffffff; }
+body.dark .profile-email,
+body.dark .profile-badge 
+{ color: #000000;
+  background: #4cbc99; }
+
+/* Avatar initials circle (when no photo) */
+body.dark .avatar-initials 
+{ background: linear-gradient(135deg, #5795f2, #49f0ad);
+  color: #ffffff; }
+
+/* Name edit input */
+body.dark .name-input 
+{ background: #0d3d3c3e !important;
+  border-color: #157266!important;
+  --color: #ffffff !important; }
+
+/* Menu footer (logout button area) */
+body.dark .menu-footer 
+{ background: #071e1d; }
+
+
+body.dark {
+
+  @media (min-width: 768px) {
+
+    .desktop-sidenav {
+      background: linear-gradient(180deg, #071e1d 0%, #0d3230 100%);
+      border-right-color: rgba(21, 114, 102, 0.3);
+      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3);
+
+      &__brand span {
+        background: linear-gradient(135deg, #ffffff, #4cbc99);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;}
+
+      &__item {
+        color: rgba(255, 255, 255, 0.6);
+        &:hover { background: rgba(76, 188, 153, 0.1); }
+        &--active {
+          background: rgba(76, 188, 153, 0.12);
+          border-color: rgba(76, 188, 153, 0.2); } }  }
+
+    .desktop-profile-panel {
+      background: linear-gradient(180deg, #071e1d 0%, #0d3230 100%);
+      border-left-color: rgba(21, 114, 102, 0.3);
+
+      &__badge, &__email {
+        background: rgba(21, 114, 102, 0.2);
+        border-color: rgba(21, 114, 102, 0.35);
+        color: #99dfcf; } } } }
+
+    body.dark .info-row{&__val {color: #d5e1de !important;}}
+
+  
+
+/* ============================================================
+ *  GROUPS PAGE  (groups.page.scss)   DONEEEEEE
+ * ============================================================ */
+
+/* Page background */
+body.dark .groups-content 
+{ --background: #071e1d !important; }
+
+/* Searchbar (already covered globally above) */
+
+/* Group card (white rounded card per group) */
+body.dark .group-card 
+{ background: #0d3d3c3e;
+  border: 1px solid #157266;             
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);}
+
+/* Group name text */
+body.dark .group-card__name 
+{ color: #ffffff; }
+
+/* Group subject text (green in light) */
+body.dark .group-card__subject 
+{ color: #4cbc99; }
+
+/* Group description text */
+body.dark .group-card__desc 
+{ color: #c3c7c6; }
+
+/* Arrow icon */
+body.dark .group-card__arrow 
+{ color: #157266; }
+
+/* Group icon background circle */
+body.dark .group-card__icon 
+{ background: #376b5e8f; }
+
+/* Empty state text */
+body.dark .empty-state h3,
+body.dark .empty-state p 
+{ color: #99dfcf; }
+
+/* Join button */
+body.dark .join-pill 
+{ background: #157266;
+  color: #ffffff; }
+
+/* Pending pill */
+body.dark .pending-pill {
+  background: #4cbc99;
+  color: #ffffff;
+}
+
+
+/* ============================================================
+ *  GROUP DETAIL PAGE  (group-detail.page.scss)
+ * ============================================================ */
+
+/* Page background */
+body.dark .detail-content 
+{ --background: #071e1d; }
+
+/* Info card (group name/subject/description card) */
+body.dark .info-card 
+{ background: #0d3d3c3e;
+  border: 1px solid #157266;  }          
+
+body.dark .info-card__name 
+{ color: #ffffff; }
+
+body.dark .info-card__subject 
+{ color: #000000;}
+
+body.dark .info-card__desc,
+body.dark .info-card__meta 
+{ color: #c3c7c6; }
+
+body.dark .info-card__icon 
+{ background: #376b5e8f; }
+
+/* Action tiles (Chat, Resources, Members, Settings buttons) */
+body.dark .action-tile 
+{ background: #0d3d3c3e; 
+  border: 1px solid #157266;          
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+
+body.dark .action-tile ion-icon,
+body.dark .action-tile span {
+  color: #ffffff; }
+
+/* Members section */
+body.dark .members-section 
+{ background: #0d3d3c3e;
+  border: 1px solid #157266; }
+
+body.dark .members-title {
+  color: #fdfdfd;
+  border-bottom-color: #2a5248;
+  ion-icon { color: #22cd96; } }
+
+/* Each member row */
+body.dark .member-item 
+{ border-bottom-color: #2a5248; }
+
+body.dark .member-name 
+{ color: #ffffff; }
+
+body.dark .member-meta 
+{ color: #4cbc99; }
+
+/* Admin/Student tag pill */
+body.dark .member-tag 
+{ background: #2a5248;
+  color: #28e0a6;}
+
+body.dark .action-tile span 
+{ color: #ffffff !important; }
+
+body.dark .action-tile ion-icon {  
+  color: #ffffff !important; }
+
+body.dark .members-title ion-icon {
+  color: #4cbc99 !important; }
+
+body.dark .dots-btn
+{ ion-icon{ color: white !important; } }
+
+/* ============================================================
+ *  ADMIN PAGE  (admin.page.scss)
+ * ============================================================ */
+
+ 
+ /* Page background */
+body.dark .admin-content 
+{ --background: #071e1d; }
+
+/* Segment toolbar */
+body.dark .segment-toolbar 
+{ --background: #071e1d;
+  ion-segment-button {--color : white !important;}} 
+
+/* White section panel (e.g. "Pending Approval" box) */
+body.dark .admin-section 
+{ background: #0d3d3c3e;
+  border:1px solid #157266 }
+
+body.dark .admin-section__title 
+{ color: #ffffff;
+  border-bottom: #157266; }
+
+/* Each group row inside admin */
+body.dark .admin-card 
+{ background: #0d3d3c3e !important;
+  border: 1px solid #157266; }
+
+body.dark .admin-card__name 
+{ color: #ffffff; }
+
+body.dark .admin-card__sub 
+{ color: #4cbc99 !important; }
+
+/* Empty note ("No pending groups") */
+body.dark .empty-note 
+{ color: #6dbfad; }
+
+/* User rows (in Users tab) */
+body.dark .user-row 
+{ background: #0d3d3c3e;           
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+
+body.dark .user-row__name 
+{ color: #ffffff; }
+
+body.dark .user-row__matricule 
+{ color: #c8d1cf; }
+
+body.dark .role-pill 
+{ background: #157266; }
+
+
+/* ============================================================
+ *  SUPERADMIN PAGE  (superadmin.page.scss)
+ * ============================================================ */
+
+/* Page background */
+body.dark .superadmin-content 
+{ --background: #071e1d !important; }
+
+body.dark .segment-toolbar
+{ion-segment-button {--color : white !important;}}
+
+/* Dashboard header text */
+body.dark .dash-title 
+{ color: #ffffff !important; }  //title : overview text
+
+body.dark .dash-sub 
+{ color: #ffffff !important; } //live statistics text
+
+/* Section title */
+body.dark .admin-section__title 
+{ color: #ffffff; }
+
+/* Group card rows in superadmin */
+body.dark .admin-card 
+{ background: #1e293b;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+
+body.dark .admin-card__name 
+{ color: #ffffff; }
+
+body.dark .admin-card__sub 
+{ color: #4cbc99; }
+
+body.dark .admin-card__meta 
+{ color: #c8d1cf; }
+
+/* Group card icon */
+body.dark .group-card-icon 
+{ background: #376b5e8f;
+  ion-icon { color: #4cbc99; } }
+
+
+//////////////  POPUP MESSAGE FOR ACTIONS //////////////
+
+ion-alert {
+  --backdrop-opacity: 0.2;
+
+  .alert-wrapper {
+    background: #ffffff;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(21, 114, 102, 0.1);
+  }
+
+  .alert-head {
+    padding-top: 20px;
+    text-align: left;
+
+    h2.alert-title {
+      color: #157266;
+      font-size: 18px;
+      font-weight: 700;
+      padding-left: 20px;
+    }
+  }
+
+  .alert-message {
+    color: #000000;
+    text-align: left;
+    padding-left: 20px;
+  }
+
+  // USER OPTIONS MENU
+  &:has(.alert-button:nth-child(3)) {
+    .alert-button-group {
+      padding: 8px 16px 16px 16px;
+      display: flex;
+      flex-direction: column !important;
+      align-items: start !important;
+      gap: 2px;
+    }
+
+    .alert-button {
+      color: #000000;
+      font-weight: 500;
+      font-size: 15px;
+      margin: 2px 0 !important;
+      padding: 8px 16px !important;
+      border-radius: 20px !important;
+      width: fit-content !important;
+      min-width: unset !important;
+      justify-content: flex-start !important;
+      text-align: left !important;
+      display: inline-flex !important;
+      flex: 0 0 auto !important;
+
+      .alert-button-inner {
+        justify-content: flex-start !important;
+      }
+
+      &.alert-button-role-destructive {
+        color: #c01a59 !important;
+      }
+
+      &.alert-button-role-cancel {
+        color: #6a7584 !important;
+        order: 0 !important;
+      }
+
+      &:hover {
+        background: rgba(74, 222, 128, 0.1) !important;
+        border-radius: 20px;
+      }
+    }
+  }
+
+  // Cancel left, action right
+  &:has(.alert-button:nth-child(2):last-child) {
+    .alert-button-group {
+      padding: 8px 16px 16px 16px;
+      display: flex;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 6px;
+    }
+
+    .alert-button {
+      color: #000000 ;
+      font-weight: 500;
+      font-size: 15px;
+      margin: 0 !important;
+      padding: 10px 20px !important;
+      border-radius: 20px !important;
+      width: auto !important;
+      min-width: unset !important;
+      justify-content: center !important;
+      text-align: center !important;
+      display: inline-flex !important;
+      flex: 0 0 auto !important;
+
+      .alert-button-inner {
+        justify-content: flex-start !important;
+      }
+
+      &.alert-button-role-destructive {
+        color: #c01a59 !important;
+      }
+
+      &.alert-button-role-cancel {
+        color: #6a7584 !important;
+        order: -1 !important;
+      }
+
+      &:hover {
+        background: rgba(74, 222, 128, 0.1) !important;
+        border-radius: 20px;
+      }
+    }
+  }
+
+  // ROLE SELECTION
+  // Non-selected role
+  .alert-radio-label,
+  .alert-checkbox-label {
+    color: #000000 !important;
+    font-weight: 500;
+  }
+
+  // Selected role
+  [aria-checked="true"] .alert-radio-label {
+    color: #157266 !important;
+    font-weight: 500;
+  }
+
+  // Select ring
+  .alert-radio-icon {
+    border-color: #157266 !important;
+
+    // Selected inner circle
+    .alert-radio-inner {
+      background: #157266 !important;
+    }
+  }
+}
+
+////////////////////  DARK MODE FOR POPUP   ///////////////////////
+
+
+body.dark ion-alert {
+  .alert-wrapper {
+    background: #053532 !important; }
+
+  .alert-head h2.alert-title {
+    color: #4cbc99 !important;
+  }
+
+  .alert-message {
+    color: #ffffff !important;
+  }
+
+  .alert-button {
+    color: #ffffff !important;
+
+    &.alert-button-role-cancel {
+      color: #a0aec0 !important;
+    }
+  }
+
+  .alert-radio-label,
+  .alert-checkbox-label {
+    color: #ffffff !important;
+  }
+
+  [aria-checked="true"] .alert-radio-label {
+    color: #4cbc99 !important;
+  }
+
+  .alert-radio-icon {
+    border-color: #4cbc99 !important;
+
+    .alert-radio-inner {
+      background: #4cbc99 !important;
+    }
+  }
+}
+
+
+
+/* ============================================================
+ *  RESOURCES PAGE  (resources.page.scss)
+ * ============================================================ */
+
+/* Page background */
+body.dark .resources-content 
+{ --background: #071e1d; }
+
+/* File item card */
+body.dark .file-item 
+{ background: #0d3d3c3e;   
+  border: 1px solid #157266;         
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+
+/* File icon background */
+body.dark .file-item__icon 
+{ background: #376b5e8f;
+  ion-icon { color: #4cbc99; } }
+
+/* File name */
+body.dark .file-item__name 
+{ color: #ffffff; }
+
+/* File date */
+body.dark .file-item__date 
+{ color: #99dfcf; }
+
+/* Empty state */
+body.dark .empty-state h3,
+body.dark .empty-state p 
+{ color: #b6b3b3 !important; }
+
+body.dark .empty-state ion-icon {
+  color: #b6b3b3 !important; }
+
+
+/* ============================================================
+ *  CHAT PAGE  (chat.page.scss)
+ * ============================================================ */
+
+
+// black background issue
+body.dark app-chat {
+  --ion-background-color: #071e1d !important;
+  background: #071e1d !important; }
+
+/* Chat toolbar/header */
+body.dark .chat-toolbar 
+{ --background: #0d3d3c  !important; }
+
+/* Page background */
+body.dark .chat-content 
+{ --background: #071e1d; }
+
+/* Incoming message bubble */
+body.dark .msg-bubble--incoming 
+{ background: #157266;         
+  color: #ffffff; }
+
+/* Sender name above incoming bubble */
+body.dark .msg-sender 
+{ color: #ffffff; }
+
+/* Message timestamp */
+body.dark .msg-time 
+{ color: #99b6ad; }
+
+/* Chat footer bar (input area) */
+body.dark .input-bar 
+{ background: #0d3d3c3e !important;             
+  border: 2px solid #157266; }
+
+/* Chat text input box */
+body.dark .chat-input 
+{ border-color:#157266;          
+  --color: #ffffff;
+  &:focus-within { border-color: #4cbc99 !important; } }
+
+/* content sent preview bar */
+body.dark .viewer-content { --background: #071e1d; } 
+
+/* Attach / record buttons */
+body.dark .bar-btn--attach 
+{ background: rgb(209, 219, 218);
+  border-color: #667674;
+  ion-icon { color: #667674 !important; } }
+
+/* Incoming — play button icon  */
+body.dark .message-row:not(.message-row--own) .voice-play ion-icon {
+  color: #ffffff !important; }
+
+/* Incoming — waveform bars unplayed  */
+body.dark .voice-bar--incoming 
+{ background: rgba(195, 205, 201, 0.386) !important; }
+
+/* Incoming — waveform bars played  */
+body.dark .voice-bar--incoming.voice-bar--played 
+{ background: #ffffff !important; }
+
+body.dark .voice-time { color: #ffffff !important; }
+
+/* Mic icon in incoming  */
+body.dark .message-row:not(.message-row--own) .voice-msg ion-icon[name="mic-outline"] {
+  color: #ffffff !important; }
+
+
+
+/* ============================================================
+ *  CREATE GROUP PAGE  (create-group.page.scss)
+ * ============================================================ */
+
+/* Page background */
+body.dark .create-content,
+body.dark ion-content.create-content 
+{ --background: #071e1d !important; }
+
+/* Form container */
+body.dark .create-form 
+{ background: #071e1d; }
+
+/* White form card */
+body.dark .create-card 
+{ background: #0d3d3c3e;
+  border: 1px solid #157266; }
+
+  //card line
+body.dark .form-header
+{ border-bottom: 1.5px solid #157266;}
+
+/* Form header icon circle */
+body.dark .form-header__icon 
+{ background: #4397813b;
+  ion-icon { color: #4cbc99; } }
+
+/* Form title and subtitle */
+body.dark .form-header h2 
+{ color: #ffffff !important; }
+
+body.dark .form-header p 
+{ color: #ffffff !important; }
+
+/* Field labels */
+body.dark .field-label 
+{ color: #ffffff !important; }
+
+/* Input fields */
+body.dark .field-wrap 
+{ background: #0d3d3c3e !important;            
+  border-color: #157266 !important; }
+
+body.dark .field-input
+{--placeholder-color: #bec6c4 !important;}
+
+body.dark .field-wrap:focus-within 
+{ border-color: #4cbc99 !important; }
+
+
+/* ============================================================
+ *  MANAGE GROUP PAGE  (manage-group.page.scss)
+ * ============================================================ */
+
+/* Page background */
+body.dark .manage-content 
+{ --background: #071e1d; }
+
+/* Section cards */
+body.dark .section-card 
+{ background: #0d3d3c3e;
+  border: 1px solid #157266; }
+
+body.dark .section-header h3,
+ body.dark .members-header h3 
+{ color: #ffffff !important; }
+
+body.dark .members-header 
+{border-bottom: 1px solid #157266;}
+
+body.dark .section-header ion-icon { color: #4cbc99; }
+
+/* Input fields */
+body.dark .field-wrap 
+{ background: #0d3d3c3e !important;
+  border-color: #157266 !important; }
+
+  
+
+/* Member rows */
+body.dark .member-row 
+{ border-bottom-color: #157266 !important; }
+
+body.dark .member-row__name 
+{ color: #ffffff; }
+
+body.dark .member-row__meta 
+{ color: #99dfcf; }
+
+/* Empty note */
+body.dark .empty-note 
+{ color: #97a2a0 !important; }
+
+
+
+/* ============================================================
+ *  DISCOVER PAGE  (discover.page.scss)
+ * ============================================================ */
+
+/* Toolbars */
+body.dark .discover-toolbar {
+  --background: #0d3d3c3e !important;
+  --color: #ffffff; }
+
+body.dark .search-toolbar {
+  --background: #0d3d3c3e !important; }
+
+/* Searchbar — overrides the global one for this page specifically */
+body.dark .custom-searchbar {
+  --background: #0d3d3c3e !important;
+  --color: #ffffff !important;
+  --placeholder-color: #6dbfad !important;
+  --icon-color: #4cbc99 !important;
+  --box-shadow: 0 0 0 1.5px #157266 !important; }
+
+/* Page content background */
+body.dark .discover-content {
+  --background: #071e1d; }
+
+/* Subject filter chips */
+body.dark .subject-chip {
+  background: #0d3d3c3e;
+  border-color: #157266;
+  color: #99dfcf;
+
+  &--active {
+    background: #157266;
+    color: #ffffff; }
+
+  &--clear {
+    border-color: #b8235c;
+    color: #b8235c;
+    &:hover { background: rgba(184, 35, 92, 0.12); } } }
+
+/* Group card */
+body.dark .group-card {
+  background: #0d3d3c3e;
+  border: 1px solid #157266;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+
+body.dark .group-card__icon {
+  background: #376b5e8f;
+  ion-icon { color: #4cbc99; } }
+
+body.dark .group-card__name {
+  color: #ffffff; }
+
+body.dark .group-card__subject {
+  color: #4cbc99; }
+
+body.dark .group-card__desc {
+  color: #c3c7c6; }
+
+body.dark .group-card__arrow {
+  color: #157266; }
+
+/* Join / pending pills */
+body.dark .join-pill {
+  background: #157266;
+  color: #ffffff; }
+
+body.dark .pending-pill {
+  background: #247eb7;
+  color: #ffffff; }
+
+/* Empty state */
+body.dark .empty-state {
+  ion-icon { color: #4cbc99; }
+  h3, p  { color: #99dfcf; } }
+
+
+
+
+/* ============================================================
+ *  LOGIN & REGISTER PAGES  (login.page.scss / register.page.scss)
+ * ============================================================ */
+
+/* The gradient background page stays — it looks fine in dark.
+   Only the card needs to change. */
+
+/* Login/register card */
+body.dark .login-card,
+body.dark .register-card 
+{ background: #0d3d3c3e;
+  border: 1px solid #157266; }
+
+body.dark .login-card h2,
+body.dark .register-card h2 
+{ color: #ffffff !important; }
+
+/* Input fields */
+body.dark .field-wrap 
+{ background: #0d3d3c3e !important;            
+  border-color: #157266 !important; }
+
+body.dark .field-wrap:focus-within 
+{ border-color: #4cbc99; }
+
+body.dark .field-icon 
+{ color: #4cbc99; }
+
+/* Link button */
+body.dark .link-btn 
+{ --color: #ffffff !important; }
+
+body.dark .field-input
+{ --color: #ffffff !important;
+  color: #ffffff !important;}

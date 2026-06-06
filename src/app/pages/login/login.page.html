@@ -1,0 +1,56 @@
+<ion-content class="login-page">
+  <div class="login-hero">
+    <div class="login-icon-wrap">
+     <img src="assets/icon/logo_design.png" alt="StudyGroup Icon" class="login-icon">
+    </div>
+    <h1>Welcome to StudyGroup</h1>  
+  </div>
+
+  <div class="login-card">
+    <h2>Sign In</h2>
+
+    <div class="error-alert" *ngIf="errorMsg">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      {{ errorMsg }}
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Email</label>
+      <div class="field-wrap">
+        <ion-icon name="mail-outline" class="field-icon"></ion-icon>
+        <ion-input
+          [(ngModel)]="email"
+          type="email"
+          placeholder="you@example.com"
+          class="field-input">
+        </ion-input>
+      </div>
+    </div>
+
+    <div class="field-group">
+  <label class="field-label">Password</label>
+  <div class="field-wrap">
+    <div class="password-wrap">
+      <ion-input
+        [type]="showPassword ? 'text' : 'password'"
+        [(ngModel)]="password"
+        class="field-input"
+        placeholder="Enter your password">
+      </ion-input>
+      <button type="button" class="toggle-password" (click)="togglePassword()">
+        <ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+    <ion-button expand="block" class="primary-btn" (click)="login()" [disabled]="loading">
+      <ion-spinner name="crescent" *ngIf="loading"></ion-spinner>
+      <span *ngIf="!loading">Sign In</span>
+    </ion-button>
+
+    <ion-button expand="block" fill="clear" class="link-btn" routerLink="/register">
+      Don't have an account? <strong>&nbsp;Register</strong>
+    </ion-button>
+  </div>
+</ion-content>

@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar class="groups-toolbar">
+    <ion-buttons slot="end" class="profile-nav-btn">
+     <ion-button fill="clear" (click)="openMenu()">
+  <img *ngIf="profilePhotoUrl"
+       [src]="profilePhotoUrl"
+       class="toolbar-avatar" />
+  <div *ngIf="!profilePhotoUrl" class="toolbar-avatar toolbar-avatar--initials">
+    {{ userName?.charAt(0)?.toUpperCase() }}
+  </div>
+</ion-button>
+    </ion-buttons>
+    <ion-title>My Groups</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="groups-content">
+
+  <div class="loading-wrap" *ngIf="loading">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </div>
+
+  <div class="empty-state" *ngIf="!loading && groups.length === 0">
+  <ion-icon name="people-outline"></ion-icon>
+  <h3>No groups yet</h3>
+  <p>Go to Discover to find and join a group <br> Or create your own group in create group</p>
+</div>
+
+  <div class="groups-list">
+         <div class="group-card"
+     *ngFor="let group of groups"
+     (click)="onCardClick(group)">
+      <div class="group-card__icon" [class.group-card__icon--photo]="group.photo_url">
+        <img *ngIf="group.photo_url" [src]="group.photo_url" class="group-photo" alt="Group" />
+        <ion-icon *ngIf="!group.photo_url" name="book-outline"></ion-icon>
+      </div>
+
+      <div class="group-card__body">
+        <div class="group-card__name">{{ group.name }}</div>
+        <div class="group-card__subject">{{ group.subject }}</div>
+      </div>
+
+      <!-- accepted: show arrow -->
+     <ion-icon
+  name="chevron-forward-outline"
+  class="group-card__arrow">
+</ion-icon>
+   </div>
+  </div>
+
+</ion-content>

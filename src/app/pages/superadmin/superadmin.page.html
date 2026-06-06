@@ -1,0 +1,145 @@
+<ion-header>
+  <ion-toolbar class="superadmin-toolbar">
+    <ion-title>System Admin </ion-title>
+    <ion-buttons slot="end" class="profile-nav-btn">
+      <ion-button fill="clear" (click)="openMenu()">
+        <img *ngIf="profilePhotoUrl" [src]="profilePhotoUrl" class="toolbar-avatar" />
+        <div *ngIf="!profilePhotoUrl" class="toolbar-avatar toolbar-avatar--initials">
+          {{ userName?.charAt(0)?.toUpperCase() }}
+        </div>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-toolbar class="segment-toolbar">
+    <ion-segment [(ngModel)]="activeTab" (ionChange)="onTabChange()">
+      <ion-segment-button value="stats">
+        <ion-icon name="stats-chart-outline"></ion-icon>
+        <ion-label>Dashboard</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="groups">
+        <ion-icon name="book-outline"></ion-icon>
+        <ion-label>Groups
+          <ion-badge color="danger" *ngIf="pendingGroups && pendingGroups.length > 0">
+            {{ pendingGroups.length }}
+          </ion-badge>
+        </ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="users">
+        <ion-icon name="people-outline"></ion-icon>
+        <ion-label>Users</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="superadmin-content">
+
+  <div class="loading-wrap" *ngIf="loading">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div *ngIf="activeTab === 'stats' && !loading">
+    <div class="dash-header">
+      <div class="dash-title">Overview</div>
+      <div class="dash-sub">Live Statistics</div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card stat-card--blue">
+        <div class="stat-icon"><ion-icon name="people-outline"></ion-icon></div>
+        <div class="stat-value">{{ stats.totalUsers }}</div>
+        <div class="stat-label">Total Students</div>
+        <div class="stat-sub">+{{ stats.newUsersThisMonth }} this month</div>
+      </div>
+      <div class="stat-card stat-card--purple">
+        <div class="stat-icon"><ion-icon name="book-outline"></ion-icon></div>
+        <div class="stat-value">{{ stats.totalGroups }}</div>
+        <div class="stat-label">Total Groups</div>
+        <div class="stat-sub">{{ stats.activeGroups }} active (30d)</div>
+      </div>
+      <div class="stat-card stat-card--green">
+        <div class="stat-icon"><ion-icon name="chatbubbles-outline"></ion-icon></div>
+        <div class="stat-value">{{ stats.totalMessages }}</div>
+        <div class="stat-label">Total Messages</div>
+      </div>
+      <div class="stat-card"
+           [class.stat-card--orange]="stats.pendingGroups > 0"
+           [class.stat-card--gray]="stats.pendingGroups === 0">
+        <div class="stat-icon"><ion-icon name="alert-circle-outline"></ion-icon></div>
+        <div class="stat-value">{{ stats.pendingGroups }}</div>
+        <div class="stat-label">Pending Groups</div>
+        <div class="stat-sub">Awaiting validation</div>
+      </div>
+      <div class="stat-card"
+           [class.stat-card--red]="stats.suspendedUsers > 0"
+           [class.stat-card--gray]="stats.suspendedUsers === 0">
+        <div class="stat-icon"><ion-icon name="ban-outline"></ion-icon></div>
+        <div class="stat-value">{{ stats.suspendedUsers }}</div>
+        <div class="stat-label">Suspended Accounts</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GROUPS -->
+  <div *ngIf="activeTab === 'groups' && !loading">
+    <div class="empty-note" *ngIf="allGroups.length === 0">No groups found</div>
+
+    <div class="groups-grid">
+      <div class="admin-card" *ngFor="let g of allGroups">
+        <div class="group-card-icon">
+          <img *ngIf="g.photo_url" [src]="g.photo_url" alt="group" />
+          <ion-icon *ngIf="!g.photo_url" name="book-outline"></ion-icon>
+        </div>
+        <div class="admin-card__body">
+          <div class="admin-card__name">{{ g.name }}</div>
+          <div class="admin-card__sub">{{ g.subject }}</div>
+          <div class="admin-card__meta">Admin : {{ g.profiles?.name }}</div>
+          <div class="admin-card__meta">Created: {{ g.created_at | date:'dd/MM/yyyy' }}</div>
+          <div class="status-chip" [class]="'status-' + (g.status || 'pending')">
+            {{ g.status || 'pending' }}
+          </div>
+        </div>
+        <div class="admin-card__actions">
+          <button class="action-btn action-btn--approve"
+                  *ngIf="g.status === 'pending'"
+                  (click)="approveGroup(g)">Approve
+            <ion-icon name="checkmark-outline"></ion-icon>
+          </button>
+          <button class="action-btn action-btn--delete" (click)="deleteGroup(g)">
+            Delete<ion-icon name="trash-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- USERS -->
+  <div *ngIf="activeTab === 'users'">
+    <div class="admin-section__title">
+      <ion-icon name="people-outline"></ion-icon>
+      All Users ({{ allUsers.length }})
+    </div>
+
+    <div class="user-row" *ngFor="let u of allUsers">
+      <div class="user-avatar" *ngIf="!u.photo_url">
+        <span>{{ u.name?.charAt(0)?.toUpperCase() }}</span>
+      </div>
+      <img *ngIf="u.photo_url" [src]="u.photo_url" [alt]="u.name" class="user-photo" />
+      <span class="user-row__name">{{ u.name }}</span>
+      <span class="suspended-badge" *ngIf="u.suspended">Suspended</span>
+      <span class="user-row__matricule">{{ u.matricule }}</span>
+     <span class="role-badge" 
+  [class.role-badge--admin]="u.role === 'admin'"
+  [class.role-badge--superadmin]="u.role === 'superadmin'">
+  {{ u.role === 'admin' ? 'Admin' 
+   : u.role === 'superadmin' ? 'System Admin' 
+   : 'Student' }}
+</span>
+     <button class="dots-btn" (click)="showUserOptions(u)" *ngIf="u.role !== 'superadmin'">
+  <ion-icon name="ellipsis-vertical"></ion-icon>
+  </button>
+    </div>
+  </div>
+
+</ion-content>
