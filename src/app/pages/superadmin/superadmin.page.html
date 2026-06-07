@@ -19,11 +19,7 @@
       </ion-segment-button>
       <ion-segment-button value="groups">
         <ion-icon name="book-outline"></ion-icon>
-        <ion-label>Groups
-          <ion-badge color="danger" *ngIf="pendingGroups && pendingGroups.length > 0">
-            {{ pendingGroups.length }}
-          </ion-badge>
-        </ion-label>
+        <ion-label>Groups</ion-label>
       </ion-segment-button>
       <ion-segment-button value="users">
         <ion-icon name="people-outline"></ion-icon>
@@ -104,7 +100,6 @@
           <button class="action-btn action-btn--approve"
                   *ngIf="g.status === 'pending'"
                   (click)="approveGroup(g)">Approve
-            <ion-icon name="checkmark-outline"></ion-icon>
           </button>
           <button class="action-btn action-btn--delete" (click)="deleteGroup(g)">
             Delete<ion-icon name="trash-outline"></ion-icon>

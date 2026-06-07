@@ -87,7 +87,10 @@
     font-size: 14px;
     color: #1e865c;
     font-weight: 600;
-    margin-bottom: 6px; }
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
 
   &__arrow {
     font-size: 20px;
@@ -147,7 +150,7 @@
 
   //no pfp
   &--initials {
-    background: linear-gradient(135deg, #97e5db, #157266);
+    background: linear-gradient(135deg, #40a8e8, #27beaa);;
     color: #ffffff;
     font-size: 14px;
     font-weight: 700;

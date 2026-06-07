@@ -18,18 +18,12 @@
         <ion-icon name="person-add-outline"></ion-icon>
         <ion-label>
           Requests
-          <ion-badge color="danger" *ngIf="allPendingRequests.length > 0">
-            {{ allPendingRequests.length }}
-          </ion-badge>
         </ion-label>
       </ion-segment-button>
       <ion-segment-button value="resources">
         <ion-icon name="document-outline"></ion-icon>
         <ion-label>
           Resources
-          <ion-badge color="danger" *ngIf="pendingResources.length > 0">
-            {{ pendingResources.length }}
-          </ion-badge>
         </ion-label>
       </ion-segment-button>
     </ion-segment>

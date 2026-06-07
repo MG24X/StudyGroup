@@ -8,7 +8,8 @@
 .segment-toolbar {
   --background: #157266;
   --border-width: 0;
-  padding: 8px 4px 12px; }
+  //padding: 8px 4px 12px;
+  padding: 8px 16px 12px; }
 
 ion-segment {
   --background: rgba(255, 255, 255, 0.185);
@@ -162,9 +163,9 @@ ion-segment-button::part(indicator) { display: none !important; }
   &:active { opacity: 0.7; } }
 
 .action-btn--approve
-{ background: #d1fae5;
-  border: 2px solid #157266;
-  color: #157266; }
+{ background: #b6face;
+  border: 2px solid #16a34a;
+  color: #16a34a; }
 
 .action-btn--delete
 { background: #fec5db;
@@ -214,6 +215,8 @@ ion-segment-button::part(indicator) { display: none !important; }
   padding: 16px;
   box-sizing: border-box; }
 
+
+  /// pfp
 ion-modal { ion-content { --background: #99dfcf; } }
 
 .toolbar-avatar
@@ -224,7 +227,7 @@ ion-modal { ion-content { --background: #99dfcf; } }
   border: 3px solid #4fe0b5;
 
   &--initials {
-    background: linear-gradient(135deg, #97e5db, #157266);
+    background: linear-gradient(135deg, #40a8e8, #27beaa);;
     color: #ffffff;
     font-size: 14px;
     font-weight: 700;

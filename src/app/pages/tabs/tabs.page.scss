@@ -382,12 +382,17 @@ ion-menu {
       border: 3px solid rgba(76,188,153,0.6);
       flex-shrink: 0; }
 
-    &__avatar-img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; display: block; }
+    &__avatar-img 
+    { width: 64px; 
+      height: 64px; 
+      border-radius: 50%; 
+      object-fit: cover; 
+      display: block; }
 
     &__avatar-initials {
       width: 64px; height: 64px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #40d4b5, #27beaa);
+      background: linear-gradient(135deg, #40a8e8, #27beaa);;
       color: #ffffff;
       font-size: 24px;
       font-weight: 800;

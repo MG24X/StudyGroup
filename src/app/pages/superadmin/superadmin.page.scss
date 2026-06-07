@@ -4,10 +4,7 @@
 { --background: #157266;
   --color: #ffffff;
   ion-title {
-    font-weight: 700;
-    font-size: 18px;
-    display: flex;
-    align-items: center;  } }
+    font-weight: 700; } }
 
 .segment-toolbar {
   --background: #157266;
@@ -201,9 +198,10 @@ ion-segment-button::part(indicator) { display: none; }
 
 .status-chip 
 { display: inline-block;
-  width: 60%;
+  width: 90px !important;
+  max-width: 90px !important;
   margin-top: 4px;
-  padding: 4px 10px;
+  padding: 4px 0px;
   border-radius: 20px;
   font-size: 11px;
   font-weight: 700;
@@ -342,7 +340,7 @@ ion-segment-button::part(indicator) { display: none; }
   object-fit: cover;
   border: 3px solid #4fe0b5;
   &--initials {
-    background: linear-gradient(135deg, #97e5db, #157266);
+    background: linear-gradient(135deg, #40a8e8, #27beaa);;
     color: #ffffff;
     font-size: 14px;
     font-weight: 700;
